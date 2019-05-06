@@ -1,0 +1,27 @@
+---
+title: "Theological Classicism in Revolutionary America"
+description: |
+  A new article created using the Distill format.
+author: Kris Stinson 
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library()
+```
+
+Ancient history was very important to Americans of the late eighteenth and early nineteenth century. Seeped in a pervasive historical culture largely inherited from England, Americans interpreted modern events through the lens of antiquity before, during, and after the American Revolution. Attempting to capture American's fascination with ancient history during this era, historians have described this historical culture as "the culture of classicism" and the "cult of antiquity." 
+
+```{r setup, include=FALSE}
+
+
+```
+
+
+
