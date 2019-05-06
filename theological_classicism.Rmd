@@ -13,15 +13,35 @@ output: distill::distill_article
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-library()
+library(tidyverse)
+library(quanteda)
+library(readtext)
+library(stm)
+library(Matrix)
+library(broom)
+library(stringr)
+library(LDAvis)
+library(dplyr)
+library(tidytext)
+library(ggplot2)
+library(tm)
 ```
 
-Ancient history was very important to Americans of the late eighteenth and early nineteenth century. Seeped in a pervasive historical culture largely inherited from England, Americans interpreted modern events through the lens of antiquity before, during, and after the American Revolution. Attempting to capture American's fascination with ancient history during this era, historians have described this historical culture as "the culture of classicism" and the "cult of antiquity." 
+Ancient history was very important to Americans of the late eighteenth and early nineteenth century. Seeped in a pervasive historical culture largely inherited from England, Americans interpreted modern events through the lens of antiquity before, during, and after the American Revolution. Attempting to capture American's fascination with ancient history during this era, historians have described this historical culture as "the culture of classicism" and the "cult of antiquity." (Richard, Winterer, Reinhold) This fixation with classical antiquity defined the intellectual atmosphere of early American colleges, making higher education during this time, if not learning itself, inherently classical. (Winterer) As such, much work has been done analyzing the many political pamphlets, speeches, and other published texts that have made explicit connections and reference to hallowed antiquity. However, as other scholars have shown, the individuals who comprised England’s North American colonies were inheritors of multiple, often conflicting intellectual traditions. Specifically, these individuals were descendants of religious traditions, mainly Protestant, that were equally useful and applicable to contemporary events. (Pestana, Winterer, Shalev, Noll, ) Additionally, the spokespeople of this tradition, mainly the ministers and preachers of local congregations, had themselves come from many of the early colleges and, as a result, had been cast in the classical mold. Indeed, it is perhaps useful to keep in mind that, for many early colleges in America, training future clergy was the primary function of the school.  And, like any committed student, they did not forget what they had learned once they had left the classroom behind. The classical concepts, characters, and rhetoric went with them and became woven into the content of their sermons; making the average sermon perhaps the most effective way in which the culture of classicism was spread throughout early America to people and places beyond the reach of the colleges. I have chosen to label this mixed approach as “theological classicism.” 
+
+To begin to get a sense as to how prevalent theological classicism was, I have cross-referenced the Political Sermons of the Founding Era: 1730-1805, which is comprised of fifty-five sermons, with Meyer Reinhold’s The Classik Pages, a study into some of the most popular classical works in Revolutionary America. 
+
+While this approach proved effective, I was wary at first of two terms in particular, "Rome" and "Romans." In regard to the former, these sermons were comprised in an atmosphere of heightened anti-Catholicism. As such, "Rome" came to refer to the seat of the "Man of Sin" and all the evils of popery. It thus appeared as though the presence of Rome within these sermons would largely be in reference to the dangers of Catholic and not the ancient civilization. However, a cursory review of the sermons reveals that this is only the case about half the time. While Rome’s connection to Catholicism is definitely present, equally so are detailed references to antiquity. 
+
 
 ```{r setup, include=FALSE}
-
-
+kwic(my_corpus, "rome", window = 5)
 ```
 
+Regarding the presence of "Romans," it appeared as though one should expect the majority of the references to be to the biblical book of the same name. More surprisingly than the returns of “Rome,” discussions on “Romans” within these sermons were almost exclusively on the ancient society itself and not on the letter from St. Paul. 
 
+```{r setup, include=FALSE}
+kwic(my_corpus, "romans", window = 5)
+
+```
 

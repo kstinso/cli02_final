@@ -7,12 +7,22 @@ my_dfm %>%
 kwic(my_corpus, "romans", window = 8)
 kwic(my_corpus, "rome", window = 8)
 
-ggplot(classics_words, aes(x = word))+
-  geom_histogram(stat = "count") +
+classics_words %>% count(word) %>% 
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "Classical References", x = "Word", y = "Number of Sermons") +
+  geom_col() + 
   coord_flip()
 
-kwic(my_corpus, pattern = classics) %>%
-  textplot_xray()
-#ADD COLOR ON THE ABOVE FROM THE QUANTEDA PAGE
+kwic(my_corpus, pattern = Rome) %>%
+  textplot_xray() +
+  aes(color = keyword)+ 
+  scale_color_manual(values = c("purple", "gold", "black")) +
+  theme(legend.position = "none")
+
+kwic(my_corpus, pattern = Greece) %>%
+  textplot_xray() +
+  aes(color = keyword)+ 
+  scale_color_manual(values = c("blue", "black", "gold", "red", "green")) +
+  theme(legend.position = "none")
 
 

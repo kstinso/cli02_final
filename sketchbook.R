@@ -25,32 +25,14 @@ library(igraph)
 library(ggraph)
 library(tm)
 
-raw1 <- read_html("Political Sermons of the American Founding Era. Vol. 1 (1730-1788) - Online Library of Liberty.html")
-raw2 <- read_html("Political Sermons of the American Founding Era. Vol. 2 (1789-1805) - Online Library of Liberty.html")
+my_csv <- read_csv("sermons.csv")
+my_corpus <- corpus(my_csv)
 
-sermons1 <- raw1 %>% xml_find_all("//*[@class='type-sermon']")
-meta1 <- map_chr(sermons1, function(x) {x %>% xml_child() %>% xml_text()})
-texts1 <- sermons1 %>% xml_text() %>% str_trim()
-vol1 <- tibble(meta = meta1, text = texts1)
-
-sermons2 <- raw2 %>% xml_find_all("//*[@class='type-sermon']")
-meta2 <- map_chr(sermons2, function(x) {x %>% xml_child() %>% xml_text()})
-texts2 <- sermons2 %>% xml_text() %>% str_trim()
-vol2 <- tibble(meta = meta2, text = texts2)
-
-all_sermons <- bind_rows(vol1, vol2) 
-write_csv(all_sermons, "~/Desktop/sermons.csv")
-
-my_csv <- read.csv("sermons (1).csv")
-my_corpus <- corpus(as.character(my_csv))
-
-rm(csv,raw1, raw2, sermons1, sermons2, vol1, vol2, meta1, meta2, texts1, texts2)
+doc42 <- my_csv %>% 
+  filter(doc_id %in% c("doc42")) %>% 
+  corpus()
 
 #NEED TEXTS 42 AND 44
-text42 <- all_sermons %>% 
-  filter(meta == "jonathan edwards, jr. the necessity of the belief of christianity fpage='1185' lpage='1216'")
-text42 <- corpus(text42)
-rm(text42)
 
 ####TOPIC MODELING
 
@@ -84,7 +66,7 @@ kwic(my_corpus, "rome", window = 8)
 
 ##### WORD/DOCUMENT FREQUENCY
 
-sermon_words <- all_sermons %>% 
+sermon_words <- my_csv %>% 
   unnest_tokens(word, text) %>%
   count(meta, word, sort = TRUE)
 
@@ -136,13 +118,20 @@ dfm_select(my_dfm, pattern = classical_characters)%>%
                      color = c('black', 'green', 'purple', 'yellow', 'blue'))
 
 classics_words <- sermon_words %>% 
-  filter(str_to_lower(word) %in% str_to_lower(classics))
+  filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
+  arrange(desc(n))
 
 bib_words <- sermon_words %>% 
   filter(str_to_lower(word) %in% str_to_lower(Israel))
 
 ggplot(classics_words, aes(x = word))+
-  geom_histogram(stat = "count") +
+  geom_histogram(stat = "count", fct_reorder(word, count)) +
+  coord_flip()
+
+classics_words %>% count(word) %>% 
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "Classical References", x = "Word", y = "Number of Sermons") +
+  geom_col() + 
   coord_flip()
 
 ggplot(bib_words, aes(x = word))+
@@ -188,6 +177,13 @@ kwic(my_corpus, pattern = Greece) %>%
 kwic(my_corpus, pattern = bib_authors) %>% 
   textplot_xray()
 
+textplot_xray(
+  kwic(my_corpus, "Rome"),
+  kwic(cs_corpus, "Rome")) +
+  aes(color = keyword) + 
+  scale_color_manual(values = c("blue", "red")) +
+  theme(legend.position = "none")
+
 ####REGEX
 
 str_view(all_sermons, "Rome")
@@ -204,7 +200,9 @@ classical_characters <- c("Sylla", "Marius", "Virgil", "Cicero", "Livy",
                        "Plutarch", "Cato", "Socrates", "Caesar", "Cesar", "Thucydides", 
                        "Demosthenes", "Sallust", "Homer", "Virgil", "Tacitus", "Dionysius", 
                        "Polybius", "Ovid", "Seneca", "Horace", "Plato", "Aristotle")
-Israel <- c("Israel", "Jerusalem", "Hebrew", "Hebrews", "Jew", "Jews")
+Israel <- c("Israel", "Jerusalem", "Hebrew", "Hebrews", "Jew", "Jews", "Paul", "Moses", "Daniel", "Isaiah", "Ezekiel", "Matthew", "Mark", "Luke", 
+            "John")
+bib_concepts <- c("Israel", "Jerusalem", "Hebrew", "Hebrews", "Jew", "Jews")
 bib_authors <- c("Paul", "Moses", "Daniel", "Isaiah", "Ezekiel", "Matthew", "Mark", "Luke", 
                  "John")
 classics_match <- str_c(classics, collapse = "|")
