@@ -61,8 +61,8 @@ out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 docs <- out$documents
 toLDAvis(topic_model, docs = docs)
 
-kwic(my_corpus, "romans", window = 8)
-kwic(my_corpus, "rome", window = 8)
+kwic(my_corpus, "roman", window = 5)
+kwic(my_corpus, "rome", window = 6)
 
 ##### WORD/DOCUMENT FREQUENCY
 
