@@ -26,3 +26,5 @@ kwic(my_corpus, pattern = Greece) %>%
   theme(legend.position = "none")
 
 
+kwic(my_corpus, pattern = classics) %>%
+  textplot_xray()

@@ -190,7 +190,7 @@ str_view(all_sermons, "Rome")
 
 classics <- c("Rome", "Roman", "Romans", "Greece", "Greek", "Greeks","Sparta", "Athens", "Virgil", "Cicero", "Livy",
               "Plutarch", "Cato", "Socrates", "Caesar", "Cesar", "Thucydides", 
-              "Demosthenes", "Sallust", "Homer", "Virgil", "Tacitus", "Dionysius", 
+              "Demosthenes", "Sallust", "Homer", "Tacitus", "Dionysius", 
               "Polybius", "Ovid", "Seneca", "Horace", "Plato", "Sylla", "Marius", "Aristotle")
 
 
@@ -198,7 +198,7 @@ Rome <- c("Rome", "Roman", "Romans")
 Greece <- c("Greece", "Greek", "Greeks", "Sparta", "Athens")
 classical_characters <- c("Sylla", "Marius", "Virgil", "Cicero", "Livy",
                        "Plutarch", "Cato", "Socrates", "Caesar", "Cesar", "Thucydides", 
-                       "Demosthenes", "Sallust", "Homer", "Virgil", "Tacitus", "Dionysius", 
+                       "Demosthenes", "Sallust", "Homer", "Tacitus", "Dionysius", 
                        "Polybius", "Ovid", "Seneca", "Horace", "Plato", "Aristotle")
 Israel <- c("Israel", "Jerusalem", "Hebrew", "Hebrews", "Jew", "Jews", "Paul", "Moses", "Daniel", "Isaiah", "Ezekiel", "Matthew", "Mark", "Luke", 
             "John")
