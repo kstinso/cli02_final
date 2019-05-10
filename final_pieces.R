@@ -23,7 +23,8 @@ kwic(my_corpus, pattern = Greece) %>%
   textplot_xray() +
   aes(color = keyword)+ 
   scale_color_manual(values = c("blue", "black", "gold", "red", "green")) +
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  labs(title = "Ancient Greece in the Sermons", y = "Sermon")
 
 
 kwic(my_corpus, pattern = classics) %>%

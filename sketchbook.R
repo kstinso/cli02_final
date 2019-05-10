@@ -28,9 +28,8 @@ library(tm)
 my_csv <- read_csv("sermons.csv")
 my_corpus <- corpus(my_csv)
 
-doc42 <- my_csv %>% 
-  filter(doc_id %in% c("doc42")) %>% 
-  corpus()
+doc42_44 <- my_csv %>% 
+  filter(doc_id %in% c("doc42", "doc44"))
 
 #NEED TEXTS 42 AND 44
 
@@ -61,8 +60,8 @@ out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 docs <- out$documents
 toLDAvis(topic_model, docs = docs)
 
-kwic(my_corpus, "roman", window = 5)
-kwic(my_corpus, "rome", window = 6)
+kwic(my_corpus, "Polybius", window = 5)
+kwic(doc42_44, "rome", window = 6)
 
 ##### WORD/DOCUMENT FREQUENCY
 
@@ -124,11 +123,16 @@ classics_words <- sermon_words %>%
 bib_words <- sermon_words %>% 
   filter(str_to_lower(word) %in% str_to_lower(Israel))
 
-ggplot(classics_words, aes(x = word))+
+ggplot(bib_words, aes(x = word))+
   geom_histogram(stat = "count", fct_reorder(word, count)) +
   coord_flip()
 
 classics_words %>% count(word) %>% 
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "Classical References", x = "Word", y = "Number of Sermons") +
+  geom_col() + 
+  coord_flip()
+bib_words %>% count(word) %>% 
   ggplot(aes(x = fct_reorder(word, n), y = n)) +
   labs(title = "Classical References", x = "Word", y = "Number of Sermons") +
   geom_col() + 
@@ -171,7 +175,7 @@ kwic(my_corpus_sub, pattern = classics)
 textplot_xray(kwic(my_corpus_sub, pattern = classics) +
                 labs(x=NULL, y='Frequency'))
 
-kwic(my_corpus, pattern = Greece) %>%
+kwic(my_corpus, pattern = classics) %>%
   textplot_xray()
 
 kwic(my_corpus, pattern = bib_authors) %>% 
@@ -188,7 +192,7 @@ textplot_xray(
 
 str_view(all_sermons, "Rome")
 
-classics <- c("Rome", "Roman", "Romans", "Greece", "Greek", "Greeks","Sparta", "Athens", "Virgil", "Cicero", "Livy",
+classics <- c("Rome", "Roman", "Romans", "Greece", "Greek", "Greeks","Sparta", "Athens", "Virgil", "Virgil's", "Cicero", "Livy",
               "Plutarch", "Cato", "Socrates", "Caesar", "Cesar", "Thucydides", 
               "Demosthenes", "Sallust", "Homer", "Tacitus", "Dionysius", 
               "Polybius", "Ovid", "Seneca", "Horace", "Plato", "Sylla", "Marius", "Aristotle")
@@ -196,7 +200,7 @@ classics <- c("Rome", "Roman", "Romans", "Greece", "Greek", "Greeks","Sparta", "
 
 Rome <- c("Rome", "Roman", "Romans")
 Greece <- c("Greece", "Greek", "Greeks", "Sparta", "Athens")
-classical_characters <- c("Sylla", "Marius", "Virgil", "Cicero", "Livy",
+classical_characters <- c("Sylla", "Marius", "Virgil", "Virgil's", "Cicero", "Livy",
                        "Plutarch", "Cato", "Socrates", "Caesar", "Cesar", "Thucydides", 
                        "Demosthenes", "Sallust", "Homer", "Tacitus", "Dionysius", 
                        "Polybius", "Ovid", "Seneca", "Horace", "Plato", "Aristotle")
