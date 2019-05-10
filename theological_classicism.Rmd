@@ -181,8 +181,70 @@ comp_classics_words <- comp_words %>%
   filter(str_to_lower(word) %in% str_to_lower("Romans")) %>% 
   arrange(desc(n))
 
-ggplot(comp_classics_words, aes(x = fct_reorder(word, n), y = n, fill=doc_id)) +
-  labs(title="The Classicism of Ministers and Thomas Paine", x="Word", y="Number of References")+
-  scale_fill_manual(labels = c("Paine's Age of Reason", "Paine's Common Sense", "Edwards Jr.'s Sermon", "Webster's Sermon"), values = c("blue", "black", "purple", "gold"))+
-  geom_bar(stat="identity", position=position_dodge())
+cs_classics_words %>%
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "4a. Classicism in 'Common Sense'", x = "Word", y = "Number of References") +
+  geom_col(fill = "darkblue")
+
+aor_classics_words %>%
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "4b. Classicism in the 'Age of Reason'", x = "Word", y = "Number of References") +
+  geom_col(fill = "darkred")+
+  coord_flip()
+```
+```{r, fig.cap="These figures show the heightened classicism of sermons over some of the most popular pamphlets of the era. Although figure 4a almost seems superfluous, which represents the results of sending Paine's *Common Sense* through the classical dictionary from Reinhold, which contained only two references with one use each, it serves as an instructive visual when compared to the breadth and quantity of references in figure 3. And while *Common Sense* was released several generations prior, each of the other three documents shown here were published in the same year, 1794. Not only are ancient references more ‘thin’ in Paine’s work, figures 4a and 4b, juxtaposed to the breadth in the sermons, shown in figure 3, neither of Paine’s works relied on classical concept as heavily as Jonathan Edwards Jr. and Noah Webster."}
+doc42 <- my_csv %>% 
+  filter(doc_id %in% c("doc42"))
+
+doc42_words <- doc42 %>% 
+  unnest_tokens(word, text) %>%
+  count(doc_id, word, sort = TRUE)
+
+total_words <- doc42_words %>% 
+  group_by(doc_id) %>% 
+  summarize(total = sum(n))
+
+doc42_words <- left_join(doc42_words, total_words)
+rm(total_words)
+
+doc42_words <- doc42_words %>%
+  bind_tf_idf(word, doc_id, n)
+
+doc42_classics_words <- doc42_words %>% 
+  filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
+  arrange(desc(n))
+
+doc44 <- my_csv %>% 
+  filter(doc_id %in% c("doc44"))
+
+doc44_words <- doc44 %>% 
+  unnest_tokens(word, text) %>%
+  count(doc_id, word, sort = TRUE)
+
+total_words <- doc44_words %>% 
+  group_by(doc_id) %>% 
+  summarize(total = sum(n))
+
+doc44_words <- left_join(doc44_words, total_words)
+rm(total_words)
+
+doc44_words <- doc44_words %>%
+  bind_tf_idf(word, doc_id, n)
+
+doc44_classics_words <- doc44_words %>% 
+  filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
+  arrange(desc(n))
+
+comp_classic_ref <- 
+  bind_rows(cs_classics_words, aor_classics_words, doc42_classics_words, doc44_classics_words) %>% 
+  group_by(doc_id) %>% 
+  count()
+ggplot(comp_classic_ref, aes(x = fct_reorder(doc_id, n), y = n, fill=doc_id)) +
+  labs(title = "4c. The Classicism of Ministers and Thomas Paine", x = "Document", y = "Number of Classical References") +
+  scale_fill_manual(labels = c("Paine's Age of Reason", "Paine's Common Sense", "Jonathan Edwards Jr.'s Sermon", "Noah Webster's Sermon"), values = c("purple", "darkblue", "gold", "darkred")) +
+  geom_col() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
 ```

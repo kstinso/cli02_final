@@ -31,6 +31,65 @@ my_corpus <- corpus(my_csv)
 doc42_44 <- my_csv %>% 
   filter(doc_id %in% c("doc42", "doc44"))
 
+doc42_44_words <- doc42_44 %>% 
+  unnest_tokens(word, text) %>%
+  count(meta, word, sort = TRUE)
+
+total_words <- doc42_44_words %>% 
+  group_by(meta) %>% 
+  summarize(total = sum(n))
+
+doc42_44_words <- left_join(doc42_44_words, total_words)
+rm(total_words)
+
+doc42_44_words <- doc42_44_words %>%
+  bind_tf_idf(word, meta, n)
+
+doc42_44_classics_words <- doc42_44_words %>% 
+  filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
+  arrange(desc(n))
+
+doc42 <- my_csv %>% 
+  filter(doc_id %in% c("doc42"))
+
+doc42_words <- doc42 %>% 
+  unnest_tokens(word, text) %>%
+  count(doc_id, word, sort = TRUE)
+
+total_words <- doc42_words %>% 
+  group_by(doc_id) %>% 
+  summarize(total = sum(n))
+
+doc42_words <- left_join(doc42_words, total_words)
+rm(total_words)
+
+doc42_words <- doc42_words %>%
+  bind_tf_idf(word, doc_id, n)
+
+doc42_classics_words <- doc42_words %>% 
+  filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
+  arrange(desc(n))
+
+doc44 <- my_csv %>% 
+  filter(doc_id %in% c("doc44"))
+
+doc44_words <- doc44 %>% 
+  unnest_tokens(word, text) %>%
+  count(doc_id, word, sort = TRUE)
+
+total_words <- doc44_words %>% 
+  group_by(doc_id) %>% 
+  summarize(total = sum(n))
+
+doc44_words <- left_join(doc44_words, total_words)
+rm(total_words)
+
+doc44_words <- doc44_words %>%
+  bind_tf_idf(word, doc_id, n)
+
+doc44_classics_words <- doc44_words %>% 
+  filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
+  arrange(desc(n))
 #NEED TEXTS 42 AND 44
 
 ####TOPIC MODELING

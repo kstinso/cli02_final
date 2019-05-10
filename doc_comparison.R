@@ -19,11 +19,31 @@ comp_classics_words <- comp_words %>%
   filter(str_to_lower(word) %in% str_to_lower("Romans")) %>% 
   arrange(desc(n))
 
+
+comp_classic_ref <- 
+  bind_rows(cs_classics_words, aor_classics_words, doc42_classics_words, doc44_classics_words) %>% 
+  group_by(doc_id) %>% 
+  count()
+ggplot(comp_classic_ref, aes(x = fct_reorder(doc_id, n), y = n, fill=doc_id)) +
+  labs(title = "The Classicism of Ministers and Thomas Paine", x = "Document", y = "Number of References") +
+  scale_fill_manual(labels = c("Paine's Age of Reason", "Paine's Common Sense", "Jonathan Edwards Jr.'s Sermon", "Noah Webster's Sermon"), values = c("purple", "darkblue", "gold", "darkred")) +
+  geom_col() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+ggplot(comp_classic_ref, aes(x = fct_reorder(doc_id, n), y = n, fill=doc_id)) +
+  labs(title = "The Classicism of Ministers and Thomas Paine", x = "Document", y = "Number of References") +
+  scale_fill_manual(labels = c("Paine's Age of Reason", "Paine's Common Sense", "Edwards Jr. and Webster's Sermons"), values = c("blue", "red", "green")) +
+  geom_col()
+
 comp_classics_words %>% count(word) %>% 
-  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+ggplot(comp_classics_words, aes(x = fct_reorder(word, n), y = n, fill=doc_id)) +
   labs(title = "The Classicism of Ministers and Thomas Paine", x = "Word", y = "Number of Sermons") +
   geom_col() + 
   coord_flip()
+
+
 
 ggplot(comp_classics_words, aes(x = fct_reorder(word, n), y = n, fill=doc_id)) +
   labs(title="The Classicism of Ministers and Thomas Paine", x="Word", y="Number of References")+
@@ -124,4 +144,18 @@ aor_classics_words <- aor_words %>%
   filter(str_to_lower(word) %in% str_to_lower(classics)) %>% 
   arrange(desc(n))
 
+aor_classics_words %>% count(word) %>% 
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  geom_col() +
+  coord_flip()
 
+cs_classics_words %>%
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "4a. Classicism in the 'Common Sense'", x = "Word", y = "Number of References") +
+  geom_col(fill = "darkblue")
+
+aor_classics_words %>%
+  ggplot(aes(x = fct_reorder(word, n), y = n)) +
+  labs(title = "4b. Classicism in the 'Age of Reason'", x = "Word", y = "Number of References") +
+  geom_col(fill = "darkred")+
+  coord_flip()

@@ -29,3 +29,8 @@ kwic(my_corpus, pattern = Greece) %>%
 
 kwic(my_corpus, pattern = classics) %>%
   textplot_xray()
+
+ggplot(comp_classics_words, aes(x = fct_reorder(word, n), y = n, fill=doc_id)) +
+  labs(title="4c. The Classicism of Ministers and Thomas Paine", x="Word", y="Number of References")+
+  scale_fill_manual(labels = c("Paine's Age of Reason", "Paine's Common Sense", "Edwards Jr.'s Sermon", "Webster's Sermon"), values = c("blue", "black", "purple", "gold"))+
+  geom_bar(stat="identity", position=position_dodge())
