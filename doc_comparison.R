@@ -25,11 +25,10 @@ comp_classics_words %>% count(word) %>%
   geom_col() + 
   coord_flip()
 
-ggplot(comp_classics_words, aes(x = fct_reorder(word, n), y = n, fill=doc_id)+labs(title="The Classicism of Ministers and Thomas Paine", y="Number of References")+geom_bar(stat="identity", position= position_dodge())
-       
-ggplot(comp_classics_words, aes(fct_reorder(word, n), y = n, fill=doc_id))+geom_bar(stat="identity", position=position_dodge())
-
-
+ggplot(comp_classics_words, aes(x = fct_reorder(word, n), y = n, fill=doc_id)) +
+  labs(title="The Classicism of Ministers and Thomas Paine", x="Word", y="Number of References")+
+  scale_fill_manual(labels = c("Paine's Age of Reason", "Paine's Common Sense", "Edwards Jr.'s Sermon", "Webster's Sermon"), values = c("blue", "black", "purple", "gold"))+
+  geom_bar(stat="identity", position=position_dodge())
 
 zoom_dfm <- dfm(zoom,
               remove_punct = TRUE,
