@@ -72,6 +72,7 @@ doc42_classics_words <- doc42_words %>%
 
 doc44 <- my_csv %>% 
   filter(doc_id %in% c("doc44"))
+doc44 <- corpus(doc44)
 
 doc44_words <- doc44 %>% 
   unnest_tokens(word, text) %>%
@@ -119,7 +120,8 @@ out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 docs <- out$documents
 toLDAvis(topic_model, docs = docs)
 
-kwic(my_corpus, "Polybius", window = 5)
+kwic(doc44, "Romans", window = 8)
+
 kwic(doc42_44, "rome", window = 6)
 
 ##### WORD/DOCUMENT FREQUENCY
